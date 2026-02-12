@@ -67,13 +67,12 @@ async def _run_pipeline(transport: BaseTransport, persona_id: str) -> None:
         },
     ]
 
-    # Lower aggregation timeouts = faster handoff to LLM after user stops speaking
+    # user_turn_stop_timeout: lower = faster handoff to LLM after user stops speaking
     context = LLMContext(messages)
     user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
         context,
         user_params=LLMUserAggregatorParams(
-            aggregation_timeout=0.3,  # Default 0.5
-            turn_emulated_vad_timeout=0.5,  # Default 0.8
+            user_turn_stop_timeout=0.5,  # Default 5.0 - reduces latency
         ),
     )
 
